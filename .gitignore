@@ -132,3 +132,5 @@ dist
 
 app/config/database.json
 app/config/db.config.js
+
+.vscode/

@@ -2,13 +2,13 @@ const db = require("../models");
 const Quiz = db.quizzes;
 const Op = db.Sequelize.Op;
 
-exports.findOne = (req, res) => {
+exports.getOne = (req, res) => {
   const id = req.params.id;
 
   Quiz.findByPk(id)
     .then(data => {
         if (data) {
-            res.data;
+            res.json(data);
         } else {
             res.status(404).send({
               message: `Cannot find Quiz with id=${id}.`
@@ -17,7 +17,7 @@ exports.findOne = (req, res) => {
     })
     .catch(err => {
         res.status(500).send({
-          message: "Error retrieving Quiz with id=" + id
+          message: `Error retrieving Quiz with id = ${id}`
         });
       });
 };
@@ -27,7 +27,7 @@ exports.create = (req, res) => {
         res.status(400).send({
             message: "Content can not be empty!"
           });
-          return;
+        return;
     }
     const quiz = {
         title: req.body.title,
@@ -44,4 +44,22 @@ exports.create = (req, res) => {
                 err.message || "Some error occurred while creating the Quiz."
             });
         });
+}
+
+exports.getAll = (req, res) => {
+  Quiz.findAll()
+    .then(data => {
+      if (data) {
+          res.json(data);
+      } else {
+          res.status(404).send({
+            message: `Can't find Quizes`
+          });
+      }
+    })
+    .catch(err => {
+        res.status(500).send({
+          message: "Error retrieving Quizzes"
+        });
+      });
 }
