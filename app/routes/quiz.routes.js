@@ -5,9 +5,9 @@ const router = require("express").Router();
 
 router.get("/", quizzes.getAll);
 
-router.get("/:id", quizzes.getOne);
+router.get("/:quizId", quizzes.getOne);
 
-router.patch("/:id/delete", quizzes.archive);
+router.patch("/:quizId/archive", quizzes.archive);
 
 router.post("/create", quizzes.create);
 

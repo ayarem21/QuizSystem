@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   Quiz.init({
     title: DataTypes.STRING,
     description: DataTypes.STRING,
-    isDeleted: DataTypes.BOOLEAN
+    isArchived: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'Quiz',

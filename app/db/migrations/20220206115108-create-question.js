@@ -18,7 +18,8 @@ module.exports = {
           model: 'Quizzes',
           key: 'id',
           as: 'fk_quiz',
-        }
+        },
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,

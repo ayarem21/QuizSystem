@@ -2,7 +2,7 @@ const db = require("../models");
 const Quiz = db.quizzes;
 
 exports.getOne = (req, res) => {
-  const id = req.params.id;
+  const id = req.params.quizId;
 
   Quiz.findByPk(id)
     .then(data => {
@@ -64,13 +64,13 @@ exports.getAll = (req, res) => {
 }
 
 exports.archive = (req, res) => {
-  const id = req.params.id;
+  const id = req.params.quizId;
 
   Quiz.findByPk(id)
     .then(data => {
       if (data) {
         data.set({
-          "isDeleted": !data.isDeleted
+          "isArchived": !data.isArchived
         });
         data.save();
         res.json(data);
