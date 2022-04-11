@@ -9,6 +9,8 @@ router.get("/:quizId", quizzes.getOne);
 
 router.patch("/:quizId/archive", quizzes.archive);
 
+router.put("/:quizId", quizzes.edit);
+
 router.post("/create", quizzes.create);
 
 app.use('/api/quizzes', router);

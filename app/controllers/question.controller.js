@@ -3,7 +3,8 @@ const Quiz = db.quizzes;
 const Question = db.questions;
 
 exports.create = (req, res) => {
-  const quizId = req.params.quizId; //ToDo is exist quiz with this id?
+  const quizId = req.params.quizId; //ToDo is exist quiz with this id? move to .then
+
   Question.create({
     body: req.body.body,
     fk_quiz: quizId
@@ -31,7 +32,7 @@ exports.getAll = (req, res) => {
         res.json(data);
       } else {
         res.status(404).send({
-          message: `Can't find Questions for Quiz with id: ${quizId}`
+          message: `Can't find Questions for Quiz with id: ${quizId}` // TODO will break logic, maybe
         });
       }
     })
