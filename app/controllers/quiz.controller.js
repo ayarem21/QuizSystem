@@ -1,10 +1,8 @@
-const db = require("../models");
-const Quiz = db.quizzes;
+const quizDao = require('../dao/quiz.dao');
 
 exports.getOne = (req, res) => {
   const id = req.params.quizId;
-
-  Quiz.findByPk(id)
+  quizDao.findById(id)
     .then(data => {
       if (data) {  //TODO refactor 
         res.json(data);
@@ -33,7 +31,7 @@ exports.create = (req, res) => {
     description: req.body.description
   }
 
-  Quiz.create(quiz)
+  quizDao.create(quiz)
     .then(data => {
       res.send(data)
     })
@@ -46,7 +44,7 @@ exports.create = (req, res) => {
 }
 
 exports.getAll = (req, res) => {
-  Quiz.findAll()
+  quizDao.findAll()
     .then(data => {
       if (data) { // TODO move to arrow function (util)
         res.json(data);
@@ -65,36 +63,20 @@ exports.getAll = (req, res) => {
 
 exports.archive = (req, res) => {
   const id = req.params.quizId;
-
-  Quiz.findByPk(id)
-    .then(data => { //TODO find controller patterns in the NODE Express
-      if (data) {
-        data.set({
-          "isArchived": !data.isArchived
-        });
-        data.save();
-        res.json(data);
-      } else {
-        res.status(404).send({
-          message: `Cannot find Quiz with id=${id}.`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: `Error retrieving Quiz with id = ${id}`
-      });
+  quizDao.archive(id)
+  .then(function([updatedRows, [updatedQuiz]]) { //returning true retuns row id and updated object. This is needed for getting only object
+    res.json(updatedQuiz)
+  })
+  .catch(err => {
+    res.status(500).send({
+      message: `Error retrieving Quiz with id = ${id}`
     });
+  });
 };
 
 exports.edit = (req, res, next) => {
   const id = req.params.quizId;
-  console.log( req.body);
-  Quiz.update({
-    "title": req.body.title,
-    "description": req.body.description,
-    "isArchived": req.body.isArchived
-  }, {returning: true, where: {id: id}})
+  quizDao.edit(req.body, id)
   .then(function([updatedRows, [updatedQuiz]]) { //returning true retuns row id and updated object. This is needed for getting only object
     res.json(updatedQuiz)
   })
