@@ -1,12 +1,10 @@
-const db = require("../models");
-const Quiz = db.quizzes;
+const quizDao = require('../dao/quiz.dao');
 
 exports.getOne = (req, res) => {
-  const id = req.params.id;
-
-  Quiz.findByPk(id)
+  const id = req.params.quizId;
+  quizDao.findById(id)
     .then(data => {
-      if (data) {
+      if (data) {  //TODO refactor 
         res.json(data);
       } else {
         res.status(404).send({
@@ -33,7 +31,7 @@ exports.create = (req, res) => {
     description: req.body.description
   }
 
-  Quiz.create(quiz)
+  quizDao.create(quiz)
     .then(data => {
       res.send(data)
     })
@@ -46,17 +44,17 @@ exports.create = (req, res) => {
 }
 
 exports.getAll = (req, res) => {
-  Quiz.findAll()
+  quizDao.findAll()
     .then(data => {
-      if (data) {
+      if (data) { // TODO move to arrow function (util)
         res.json(data);
       } else {
         res.status(404).send({
-          message: `Can't find Quizes`
+          message: `Can't find Quizzes`
         });
       }
     })
-    .catch(err => {
+    .catch(err => {  //TODO exception handler
       res.status(500).send({
         message: `Error retrieving Quizzes: ${err.message}`
       });
@@ -64,25 +62,23 @@ exports.getAll = (req, res) => {
 }
 
 exports.archive = (req, res) => {
-  const id = req.params.id;
-
-  Quiz.findByPk(id)
-    .then(data => {
-      if (data) {
-        data.set({
-          "isDeleted": !data.isDeleted
-        });
-        data.save();
-        res.json(data);
-      } else {
-        res.status(404).send({
-          message: `Cannot find Quiz with id=${id}.`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: `Error retrieving Quiz with id = ${id}`
-      });
+  const id = req.params.quizId;
+  quizDao.archive(id)
+  .then(function([updatedRows, [updatedQuiz]]) { //returning true retuns row id and updated object. This is needed for getting only object
+    res.json(updatedQuiz)
+  })
+  .catch(err => {
+    res.status(500).send({
+      message: `Error retrieving Quiz with id = ${id}`
     });
+  });
+};
+
+exports.edit = (req, res, next) => {
+  const id = req.params.quizId;
+  quizDao.edit(req.body, id)
+  .then(function([updatedRows, [updatedQuiz]]) { //returning true retuns row id and updated object. This is needed for getting only object
+    res.json(updatedQuiz)
+  })
+  .catch(next);
 };

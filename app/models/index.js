@@ -13,5 +13,6 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.quizzes = require("./quiz.model.js")(sequelize, Sequelize);
+db.questions = require("./question.model.js")(sequelize, Sequelize);
 
 module.exports = db;
