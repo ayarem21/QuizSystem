@@ -28,7 +28,8 @@ exports.create = (req, res) => {
   }
   const quiz = {
     title: req.body.title,
-    description: req.body.description
+    description: req.body.description,
+    questions: req.body.questions
   }
 
   quizDao.create(quiz)
@@ -46,13 +47,7 @@ exports.create = (req, res) => {
 exports.getAll = (req, res) => {
   quizDao.findAll()
     .then(data => {
-      if (data) { // TODO move to arrow function (util)
         res.json(data);
-      } else {
-        res.status(404).send({
-          message: `Can't find Quizzes`
-        });
-      }
     })
     .catch(err => {  //TODO exception handler
       res.status(500).send({
