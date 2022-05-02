@@ -42,7 +42,7 @@ exports.create = (req, res) => {
           err.message || "Some error occurred while creating the Quiz."
       });
     });
-}
+};
 
 exports.getAll = (req, res) => {
   quizDao.findAll()
@@ -54,9 +54,9 @@ exports.getAll = (req, res) => {
         message: `Error retrieving Quizzes: ${err.message}`
       });
     });
-}
+};
 
-exports.archive = (req, res) => {
+exports.archive = (req, res) => { //TODO only creator of the quiz can delete archive
   const id = req.params.quizId;
   quizDao.archive(id)
   .then(function([updatedRows, [updatedQuiz]]) { //returning true retuns row id and updated object. This is needed for getting only object
