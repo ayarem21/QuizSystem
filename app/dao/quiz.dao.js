@@ -17,7 +17,8 @@ function findById(id) {
     return Quiz.findOne({
         include: [{
             association: db.quizQuestion,
-            as: 'questions'
+            as: 'questions',
+            include: [ db.questionAnswer ]
         }],
         where: { id: id }
     })
@@ -27,7 +28,8 @@ function create(quiz) {
     return Quiz.create(quiz, {
             include: [{
                 association: db.quizQuestion,
-                as: 'questions'
+                as: 'questions',
+                include: [ db.questionAnswer ]
             }]
         }
     );
