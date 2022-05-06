@@ -28,7 +28,8 @@ exports.create = (req, res) => {
   }
   const quiz = {
     title: req.body.title,
-    description: req.body.description
+    description: req.body.description,
+    questions: req.body.questions
   }
 
   quizDao.create(quiz)
@@ -41,27 +42,21 @@ exports.create = (req, res) => {
           err.message || "Some error occurred while creating the Quiz."
       });
     });
-}
+};
 
 exports.getAll = (req, res) => {
   quizDao.findAll()
     .then(data => {
-      if (data) { // TODO move to arrow function (util)
         res.json(data);
-      } else {
-        res.status(404).send({
-          message: `Can't find Quizzes`
-        });
-      }
     })
     .catch(err => {  //TODO exception handler
       res.status(500).send({
         message: `Error retrieving Quizzes: ${err.message}`
       });
     });
-}
+};
 
-exports.archive = (req, res) => {
+exports.archive = (req, res) => { //TODO only creator of the quiz can delete archive
   const id = req.params.quizId;
   quizDao.archive(id)
   .then(function([updatedRows, [updatedQuiz]]) { //returning true retuns row id and updated object. This is needed for getting only object

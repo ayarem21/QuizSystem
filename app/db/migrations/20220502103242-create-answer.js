@@ -1,20 +1,27 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('quizzes', {
+    await queryInterface.createTable('answers', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      title: {
+      body: {
         type: Sequelize.STRING
       },
-      description: {
-        type: Sequelize.STRING
+      fk_question: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'questions',
+          key: 'id',
+          as: 'fk_question',
+        },
+        allowNull: false,
       },
-      isDeleted: {
+      is_right_answer: {
         allowNull: false,
         type: Sequelize.BOOLEAN,
         defaultValue: false
@@ -30,6 +37,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('quizzes');
+    await queryInterface.dropTable('answers');
   }
 };
