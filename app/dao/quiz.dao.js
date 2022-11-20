@@ -25,14 +25,17 @@ function findById(id) {
 }
   
 function create(quiz) {
-    return Quiz.create(quiz, {
+    return quiz.questions ? 
+        Quiz.create(quiz, {
             include: [{
                 association: db.quizQuestion,
                 as: 'questions',
                 include: [ db.questionAnswer ]
-            }]
-        }
-    );
+                }]
+            }    
+        )
+    :
+        Quiz.create(quiz);
 }
   
   

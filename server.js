@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(function (req, res, next) {
 
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
 
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -27,7 +27,7 @@ app.use(function (req, res, next) {
 require("./app/routes/quiz.routes")(app);
 require("./app/routes/question.routes")(app);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);dfsdfsdfsdf
+  console.log(`Server is running on port ${PORT}.`);
 });
