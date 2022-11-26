@@ -8,11 +8,14 @@ let questionDao = {
     edit: edit
 }
 
-function findAll(quizId) { // TODO remove, if will not needed
+function findAll(quizId) {
      return Question.findAll({
           where: {
                fk_quiz: quizId
-          }
+          },
+          include : [{
+               association: db.questionAnswer
+          }]
      })
 }
 
