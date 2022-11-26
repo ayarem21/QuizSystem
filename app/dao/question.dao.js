@@ -14,8 +14,12 @@ function findAll(quizId) {
                fk_quiz: quizId
           },
           include : [{
-               association: db.questionAnswer
-          }]
+               association: db.questionAnswer,
+               attributes: {
+                    exclude: ['is_right_answer']
+                }
+          }],
+          
      })
 }
 
